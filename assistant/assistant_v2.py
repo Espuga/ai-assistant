@@ -17,7 +17,8 @@ class Assistant_v2():
         "role": "system",
         "content": """You are a technical assistant that interacts with APIs through function calls (tools). 
 If the user's message matches any of the available tools (API endpoints), you MUST call the corresponding tool. 
-Do not write example code or assumptions — if required fields are missing, ask the user for them."""
+Do not write example code or assumptions — if required fields are missing, ask the user for them.
+If you don't have the tool to do the user's message, then say: \"I can't do it, Sorry!\""""
       }
     ]
 
@@ -28,7 +29,7 @@ Do not write example code or assumptions — if required fields are missing, ask
         "type": "function",
         "function": {
           "name": self._endpoint_to_tool_name(api["endpoint"], api["method"]),
-          "description": f"Call the {api['method']} {api['endpoint']} endpoint.",
+          "description": f"Call the {api['method']} {api['endpoint']} endpoint. {api['description']}",
           "parameters": {
             "type": "object",
             "properties": {

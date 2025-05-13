@@ -3,6 +3,7 @@ class APIExecutor_v2:
     self.base_url = base_url
     self.api_schema = [
       {
+        "description": "Use this endpoint do create a new user.",
         "endpoint": "/users",
         "method": "POST",
         "data": {
@@ -10,11 +11,18 @@ class APIExecutor_v2:
           "email": "string",
           "password": "string"
         }
-      }
+      },
+      {
+        "description": "Use this endpoint to delete a user.",
+        "endpoint": "/users/<userId>",
+        "method": "DELETE",
+        "data": {
+          "userId": "integer"
+        }
+      },
     ]
 
   def get_api_schema(self):
-    # Optionally load from DB instead
     return self.api_schema
 
   def execute_action(self, action):
@@ -27,10 +35,12 @@ class APIExecutor_v2:
       response = requests.post(url, json=data)
     elif method == "GET":
       response = requests.get(url, params=data)
+    elif method == "DELETE":
+      response = requests.delete(url, params=data)
     else:
       return {"error": f"Unsupported method: {method}"}
 
-    if response.status_code in [200, 201]:
+    if response.status_code in [200, 201, 204]:
       return response.json()
     else:
       return {
