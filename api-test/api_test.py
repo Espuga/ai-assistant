@@ -34,7 +34,21 @@ def create_user():
 @app.route("/users/<userId>", methods=['DELETE'])
 def delete_user(userId):
   print(f"User ID to delete: {userId}")
-  return f"Received request to delete user with ID: {userId}", 200
+  return jsonify({
+    "message": "User deleted successfully"
+  }), 200
+  
+@app.route("/users/<userId>", methods=['GET'])
+def get_user(userId):
+  print(f"Get info from user: {userId}")
+  user = {
+    "name": "Test name",
+    "email": "Test email",
+  }
+  return jsonify({
+    "message": "User created successfully",
+    "user": user
+  }), 201
 
 if __name__ == '__main__':
   app.run(debug=False)
